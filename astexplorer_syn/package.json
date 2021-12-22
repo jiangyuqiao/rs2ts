@@ -1,0 +1,16 @@
+{
+  "name": "astexplorer-syn",
+  "collaborators": [
+    "Ingvar Stepanyan <me@rreverser.com>"
+  ],
+  "version": "1.0.57",
+  "files": [
+    "astexplorer_syn_bg.wasm",
+    "astexplorer_syn.js",
+    "astexplorer_syn_bg.js",
+    "astexplorer_syn.d.ts"
+  ],
+  "module": "astexplorer_syn.js",
+  "types": "astexplorer_syn.d.ts",
+  "sideEffects": false
+}
