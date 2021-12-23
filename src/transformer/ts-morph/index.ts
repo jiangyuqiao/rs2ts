@@ -1,3 +1,4 @@
+// ts-morph is not used now
 import { Project, ts } from 'ts-morph';
 
 export function test() {

@@ -1,6 +1,4 @@
-import { parseRustCode } from './rs-parser';
-import { convertItem, NodeType } from './converter/babel';
-import { generate } from './converter/babel/code-generator';
+import { transformToTSCode, Options } from './transformer';
 
 const testCode = `
 fn test(x: usize, y: usize) {
@@ -12,14 +10,9 @@ fn test(x: usize, y: usize) {
 }
 `;
 
-async function convertCode() {
-  const rsAST = await parseRustCode(testCode);
-  const tsAST = convertItem(rsAST as NodeType.File);
-  console.log(generate(tsAST));
+async function startTransform(rs: string, options: Options) {
+  const code = await transformToTSCode(rs, options);
+  return code;
 }
 
-function traverse(treeNode: object, parent: object) {
-
-}
-
-convertCode();
+startTransform(testCode, {}).then(r => console.log(r));
