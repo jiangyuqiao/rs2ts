@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/jiangyuqiao/rs2ts#readme",
   "devDependencies": {
+    "@types/lodash": "^4.14.178",
     "fork-ts-checker-webpack-plugin": "^6.5.0",
     "static-server": "^2.2.1",
     "ts-loader": "^9.2.6",
@@ -30,6 +31,7 @@
     "@babel/generator": "^7.16.5",
     "@babel/types": "^7.16.0",
     "astexplorer-syn": "file:astexplorer_syn",
+    "lodash": "^4.17.21",
     "ts-morph": "^13.0.2"
   }
 }

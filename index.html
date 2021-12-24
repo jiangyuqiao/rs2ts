@@ -5,9 +5,22 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="./dist/index.js"></script>
+  <style>
+    .code textarea {
+      width: 600px;
+      height: 80vh;
+      resize: none;
+    }
+  </style>
   <title>rs2js</title>
 </head>
 <body>
-
+  <div class="code">
+    <textarea name="source" id="source" rows="10"></textarea>
+    <textarea name="target" id="target" rows="10"></textarea>
+  </div>
+  <div>
+    <button id="submit">convert</button>
+  </div>
 </body>
 </html>
