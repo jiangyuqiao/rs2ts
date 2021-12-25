@@ -1,7 +1,9 @@
 import * as ts from '@babel/types';
 import * as rs from '../rust/node-types';
 
-export type TransformFn = UnionToIntersection<F<NodeMappings>>;
+export type TransformFn = UnionToIntersection<F<
+  NodeMappings | { source: rs.BaseNode, target: ts.Node }
+>>;
 
 type F<T> = T extends {
   source: infer Source,
@@ -17,4 +19,6 @@ type UnionToIntersection<U> = (U extends any
 type NodeMappings =
   { source: rs.File, target: ts.File } |
   { source: rs.Ident, target: ts.Identifier } |
-  { source: rs.BaseNode, target: ts.Node }
+  { source: rs.PatType, target: ts.Identifier } |
+  { source: rs.TypePath, target: ts.GenericTypeAnnotation } |
+  { source: rs.PathSegment, target: ts.GenericTypeAnnotation };

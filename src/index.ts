@@ -23,7 +23,7 @@ function startTransform() {
   }
   lock = true;
   const source = codeInput.value;
-  transformToTSCode(source, {}).then((r) => {
+  transformToTSCode(source, { toCamelCase: true }).then((r) => {
     codeOutput.value = r;
   }).catch((e) => {
     console.error(e);
