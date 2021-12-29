@@ -1,4 +1,4 @@
-export type NodeType = 'File' | 'ItemFn' | 'Block' | 'Signature' | 'Brace' | 'Ident' | 'PatIdent' | 'PatType' | 'TypePath' | 'Path' | 'PathSegment' | 'ReturnType::Type' | 'Generics' | 'AngleBracketedGenericArguments';
+export type NodeType = 'File' | 'ItemFn' | 'Block' | 'Signature' | 'Brace' | 'Ident' | 'PatIdent' | 'PatType' | 'TypePath' | 'TypeReference' | 'Path' | 'PathSegment' | 'ReturnType::Type' | 'Generics' | 'AngleBracketedGenericArguments';
 
 export interface LineColumn {
   _type: 'LineColumn';
@@ -52,6 +52,10 @@ export interface Lt extends Token {
   _type: 'Lt';
 }
 
+export interface And extends Token {
+  _type: 'And';
+}
+
 export interface BaseNode {
   attrs: any[];
   span: Span;
@@ -86,13 +90,22 @@ export interface PatIdent extends BaseNode {
   subpat: undefined;
 }
 
+export type GenericArgument =
+  // Lifetime | // A lifetime argument.
+  Type // | // A type argument.
+  // Binding | // A binding (equality constraint) on an associated type: the `Item = u8` in `Iterator<Item = 8>`.
+  // Constraint | // An associated type bound: `Iterator<Item: Display>`.
+  // Expr | // A const expression. Must be inside of a block.
+;
+
 export interface AngleBracketedGenericArguments extends BaseNode {
   type: 'AngleBracketedGenericArguments';
-  args: Punctuated<TypePath | Comma>;
+  args: Punctuated<GenericArgument | Comma>;
   colon2_token: Colon2;
   gt_token: Gt;
   lt_token: Lt;
 }
+
 
 export interface PathSegment extends BaseNode {
   _type: 'PathSegment';
@@ -115,11 +128,37 @@ export interface TypePath extends BaseNode {
   qself: undefined;
 }
 
+export interface TypeReference extends BaseNode {
+  _type: 'TypeReference';
+  and_token: And;
+  elem: Type;
+  lifetime: undefined
+  mutability: undefined
+}
+
+export type Type =
+  // TypeArray | // A fixed size array type: `[T; n]`.
+  // TypeBareFn | // A bare function type: `fn(usize) -> bool`.
+  // TypeGroup | // A type contained within invisible delimiters.
+  // TypeImplTrait | // An `impl Bound1 + Bound2 + Bound3` type where `Bound` is a trait or a lifetime.
+  // TypeInfer | // Indication that a type should be inferred by the compiler: `_`.
+  // TypeMacro | // A macro in the type position.
+  // TypeNever | // The never type: `!`.
+  // TypeParen | // A parenthesized type equivalent to the inner type.
+  TypePath | // A path like `std::slice::Iter`, optionally qualified with a self-type as in `<Vec<T> as SomeTrait>::Associated`.
+  // TypePtr | // A raw pointer type: `*const T` or `*mut T`.
+  TypeReference // A reference type: `&'a T` or `&'a mut T`.
+  // TypeSlice | // A dynamically sized slice type: `[T]`.
+  // TypeTraitObject | // A trait object type `Bound1 + Bound2 + Bound3` where `Bound` is a trait or a lifetime.
+  // TypeTuple | // A tuple type: `(A, B, C, String)`.
+  // TokenStream | // Tokens in type position not interpreted by Syn.
+;
+
 export interface PatType extends BaseNode {
   _type: 'PatType';
   colon_token: Colon;
   pat: PatIdent;
-  ty: TypePath
+  ty: Type;
 }
 
 export interface ReturnType_Default {
@@ -128,7 +167,7 @@ export interface ReturnType_Default {
 
 export interface ReturnType_Type extends BaseNode {
   0: RArrow;
-  1: TypePath;
+  1: Type;
   _type: 'ReturnType::Type';
 }
 

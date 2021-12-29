@@ -1,7 +1,11 @@
 import * as rs from '../../rust/node-types';
 import * as ts from '@babel/types';
 import { register } from './registry';
-import { convertTypeNameString, convertPunctuatedToArray } from '../../utils';
+import {
+  convertIdentifierNameString,
+  convertTypeNameString,
+  convertPunctuatedToArray
+} from '../../utils';
 import { Context } from '../types';
 
 export function wrapTypeAnnotation(node?: ts.GenericTypeAnnotation): ts.TypeAnnotation | undefined {
@@ -41,7 +45,8 @@ const strAnnotation = ts.stringTypeAnnotation();
 
 const BuiltInTypes = {
   'bool': ts.booleanTypeAnnotation(),
-  'String': strAnnotation
+  'String': strAnnotation,
+  'str': strAnnotation
 };
 
 [
@@ -93,4 +98,16 @@ register('TypePath', function (node: rs.TypePath, c) {
     );
   }
   return generateGenericTypeAnnotation(qtId, typeParams);
+});
+
+register('PatType', function (node: rs.PatType, c) {
+  const id = ts.identifier(
+    convertIdentifierNameString(node.pat.ident.to_string, c.options)
+  );
+  id.typeAnnotation = wrapTypeAnnotation(c.t(node.ty));
+  return id;
+});
+
+register('TypeReference', function (node: rs.TypeReference, c) {
+  return c.t(node.elem);
 });

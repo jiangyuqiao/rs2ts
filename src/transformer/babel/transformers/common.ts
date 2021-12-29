@@ -16,14 +16,6 @@ register('Ident', function (node: rs.Ident, c) {
   return ts.identifier(convertIdentifierNameString(node.to_string, c.options));
 });
 
-register('PatType', function (node: rs.PatType, c) {
-  const id = ts.identifier(
-    convertIdentifierNameString(node.pat.ident.to_string, c.options)
-  );
-  id.typeAnnotation = wrapTypeAnnotation(c.t(node.ty));
-  return id;
-});
-
 register('ItemFn', function (node: rs.ItemFn, c) {
   const params = convertPunctuatedToArray(node.sig.inputs)
     .filter(n => n._type === 'PatType')

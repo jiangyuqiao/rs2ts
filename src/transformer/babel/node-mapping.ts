@@ -20,5 +20,4 @@ type NodeMappings =
   { source: rs.File, target: ts.File } |
   { source: rs.Ident, target: ts.Identifier } |
   { source: rs.PatType, target: ts.Identifier } |
-  { source: rs.TypePath, target: ts.GenericTypeAnnotation } |
-  { source: rs.PathSegment, target: ts.GenericTypeAnnotation };
+  { source: rs.PathSegment | rs.TypePath | rs.TypeReference, target: ts.GenericTypeAnnotation };

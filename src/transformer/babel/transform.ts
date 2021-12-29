@@ -15,7 +15,7 @@ class Transformer {
   transformTreeNode: TransformFn = (node) => {
     const transformer = this.transformers[node._type];
     if (!transformer) {
-      console.error(`unrecognized node type: ${node._type}`);
+      throw new Error(`unrecognized node type: ${node._type}`);
     }
     return transformer(node, {
       options: this.options,
