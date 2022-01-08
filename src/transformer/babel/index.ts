@@ -13,7 +13,7 @@ if (!window.Buffer) {
 import * as ts from '@babel/types';
 import _generate from '@babel/generator';
 
-function generate(ast: ts.Node) {
+function generate(ast: ts.BaseNode) {
   return _generate(ast).code as string;
 }
 

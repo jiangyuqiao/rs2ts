@@ -55,7 +55,7 @@ const BuiltInTypes = {
   'f64', 'f32'
 ].forEach(t => BuiltInTypes[t] = numAnnotation);
 
-register('PathSegment', function (node: rs.PathSegment, c) {
+register('PathSegment', function (node, c) {
   const typeName = convertTypeNameString(node.ident.to_string, c.options);
   if (node.arguments._type === 'PathArguments::None') {
     let annotation = BuiltInTypes[typeName];
@@ -73,7 +73,7 @@ register('PathSegment', function (node: rs.PathSegment, c) {
   }
 });
 
-register('TypePath', function (node: rs.TypePath, c) {
+register('TypePath', function (node, c) {
   const segments = convertPunctuatedToArray(node.path.segments)
     .filter(n => n._type === 'PathSegment') as rs.PathSegment[];
   if (segments.length === 0) {
@@ -100,7 +100,7 @@ register('TypePath', function (node: rs.TypePath, c) {
   return generateGenericTypeAnnotation(qtId, typeParams);
 });
 
-register('PatType', function (node: rs.PatType, c) {
+register('PatType', function (node, c) {
   const id = ts.identifier(
     convertIdentifierNameString(node.pat.ident.to_string, c.options)
   );
@@ -108,6 +108,6 @@ register('PatType', function (node: rs.PatType, c) {
   return id;
 });
 
-register('TypeReference', function (node: rs.TypeReference, c) {
+register('TypeReference', function (node, c) {
   return c.t(node.elem);
 });

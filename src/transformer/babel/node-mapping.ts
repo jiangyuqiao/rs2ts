@@ -1,23 +1,15 @@
 import * as ts from '@babel/types';
 import * as rs from '../rust/node-types';
 
-export type TransformFn = UnionToIntersection<F<
-  NodeMappings | { source: rs.BaseNode, target: ts.Node }
->>;
+export type NodeMappings = _NodeMappings | {
+  type: '__BaseNode__', source: rs.BaseNode, target: ts.BaseNode
+};
 
-type F<T> = T extends {
-  source: infer Source,
-  target: infer Target
-} ? (source: Source) => Target : never;
-
-type UnionToIntersection<U> = (U extends any
-  ? (k: U) => void
-  : never) extends (k: infer I) => void
-  ? I
-  : never;
-
-type NodeMappings =
-  { source: rs.File, target: ts.File } |
-  { source: rs.Ident, target: ts.Identifier } |
-  { source: rs.PatType, target: ts.Identifier } |
-  { source: rs.PathSegment | rs.TypePath | rs.TypeReference, target: ts.GenericTypeAnnotation };
+type _NodeMappings =
+  { type: 'File', source: rs.File, target: ts.File } |
+  { type: 'ItemFn', source: rs.ItemFn, target: ts.FunctionDeclaration } |
+  { type: 'Ident', source: rs.Ident, target: ts.Identifier } |
+  { type: 'PatType', source: rs.PatType, target: ts.Identifier } |
+  { type: 'PathSegment', source: rs.PathSegment, target: ts.GenericTypeAnnotation } |
+  { type: 'TypePath', source: rs.TypePath, target: ts.GenericTypeAnnotation } |
+  { type: 'TypeReference', source: rs.TypeReference, target: ts.GenericTypeAnnotation };

@@ -1,31 +1,27 @@
 import * as ts from '@babel/types';
 import * as rs from '../rust/node-types';
 import { Options } from '../types';
-import { Transformers, TransformFn } from './types';
-import { transformers } from './transformers';
+import { NodeTransformer } from './types';
+import { getTransformer } from './transformers';
 
 class Transformer {
-  transformers: Transformers;
   options: {};
-  constructor(transformers: Transformers, options: Options) {
-    this.transformers = transformers;
+
+  constructor(options: Options) {
     this.options = options;
   }
 
-  transformTreeNode: TransformFn = (node) => {
-    const transformer = this.transformers[node._type];
-    if (!transformer) {
-      throw new Error(`unrecognized node type: ${node._type}`);
-    }
+  transformTreeNode = (node) => {
+    const transformer = getTransformer(node._type);
     return transformer(node, {
       options: this.options,
-      transform: this.transformTreeNode,
-      t: this.transformTreeNode
+      transform: this.transformTreeNode as NodeTransformer,
+      t: this.transformTreeNode as NodeTransformer
     });
   }
 }
 
-export function transform(node: rs.BaseNode, options?: Options): ts.Node {
-  const transformer = new Transformer(transformers, options);
+export function transform(node: rs.BaseNode, options?: Options): ts.BaseNode {
+  const transformer = new Transformer(options);
   return transformer.transformTreeNode(node);
 }
