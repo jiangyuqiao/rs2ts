@@ -19,6 +19,7 @@ type Context = {
   transform: NodeTransformer;
   /** shorthand of transform() */
   t: NodeTransformer;
+  getSourceCode: (span: rs.Span) => string;
 };
 
 type Transformers = { [rsNodeType in rs.NodeType]?: NodeTransformerWithContext };
