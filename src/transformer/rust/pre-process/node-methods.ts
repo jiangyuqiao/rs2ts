@@ -53,4 +53,8 @@ export class Node implements BaseNode {
   getAbsType(): AbstractType | undefined {
     return this._absType;
   }
+
+  getParent(): void | BaseNode {
+    return this._parent;
+  }
 }

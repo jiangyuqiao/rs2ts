@@ -10,6 +10,9 @@ type _NodeMappings =
   { type: 'ItemFn', source: rs.ItemFn, target: ts.FunctionDeclaration } |
   { type: 'Ident', source: rs.Ident, target: ts.Identifier } |
   { type: 'PatType', source: rs.PatType, target: ts.Identifier } |
-  { type: 'PathSegment', source: rs.PathSegment, target: ts.GenericTypeAnnotation } |
+  { type: 'Path', source: rs.Path, target: ts.GenericTypeAnnotation | ts.Expression } |
   { type: 'TypePath', source: rs.TypePath, target: ts.GenericTypeAnnotation } |
-  { type: 'TypeReference', source: rs.TypeReference, target: ts.GenericTypeAnnotation };
+  { type: 'TypeReference', source: rs.TypeReference, target: ts.GenericTypeAnnotation } |
+  { type: 'Stmt::Semi', source: rs.Stmt_Semi, target: ts.ExpressionStatement } |
+  { type: 'ExprCall', source: rs.ExprCall, target: ts.CallExpression | ts.ReturnStatement} |
+  { type: 'ExprPath', source: rs.ExprPath, target: ts.Expression };

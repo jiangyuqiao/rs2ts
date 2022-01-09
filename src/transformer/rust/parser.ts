@@ -7,6 +7,7 @@ export function parse(code: string): Promise<File> {
     .then(m => m.default)
     .then((m) => {
       const treeNode = m.parseFile(code) as File;
+      console.log('rust', JSON.parse(JSON.stringify(treeNode)));
       preProcess(treeNode);
       return treeNode;
     });

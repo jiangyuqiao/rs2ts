@@ -35,3 +35,23 @@ export interface And extends Token {
 export interface Brace extends Token {
   _type: 'Brace';
 }
+
+export interface Semi extends Token {
+  _type: 'Semi';
+}
+
+export interface Let extends Token {
+  _type: 'Let';
+}
+
+export interface Eq extends Token {
+  _type: 'Eq';
+}
+
+export interface Question extends Token {
+  _type: 'Question';
+}
+
+export interface Paren extends Token {
+  _type: 'Paren';
+}

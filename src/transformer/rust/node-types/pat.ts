@@ -2,6 +2,8 @@ import { BaseNode, Ident } from './common';
 import { Type } from './type';
 import { Colon } from './token';
 
+export type Pat = PatIdent | PatType;
+
 export interface PatIdent extends BaseNode {
   _type: 'PatIdent';
   ident: Ident;

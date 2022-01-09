@@ -5,7 +5,7 @@ const parserModule = import('./rust/parser');
 async function transformToTSCode(rs: string, options: Options): Promise<string> {
   const [parser, transformer] = await Promise.all([parserModule, transformerModule]);
   const rustTreeNode = await parser.parse(rs);
-  console.log('rust', rustTreeNode);
+  console.log('pre-processed:', rustTreeNode);
   const tsTreeNode = transformer.transform(rustTreeNode, rs, options);
   return transformer.generate(tsTreeNode);
 }

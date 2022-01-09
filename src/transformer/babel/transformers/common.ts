@@ -30,3 +30,21 @@ register('ItemFn', function (node, c) {
   }
   return fnDeclaration;
 });
+
+register('Stmt::Semi', function (node, c) {
+  return ts.expressionStatement(c.t(node[0]) as ts.Expression);
+});
+
+register('ExprCall', function (node, c) {
+  const callee = c.t(node.func);
+  const params = ((
+    convertPunctuatedToArray(node.args)
+      .filter(n => n._type !== 'Comma') as rs.Expr[])
+      .map(n => c.t(n))
+  ) as ts.Expression[];
+  const callExp = ts.callExpression(callee as ts.Expression, params);
+  if ((node.getParent() as rs.Block)?._type === 'Block') {
+    return ts.returnStatement(callExp);
+  }
+  return callExp;
+});

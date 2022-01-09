@@ -1,4 +1,4 @@
-export type NodeType = 'File' | 'ItemFn' | 'Block' | 'Signature' | 'Brace' | 'Ident' | 'PatIdent' | 'PatType' | 'TypePath' | 'TypeReference' | 'Path' | 'PathSegment' | 'ReturnType::Type' | 'Generics' | 'AngleBracketedGenericArguments';
+export type NodeType = 'File' | 'ItemFn' | 'Block' | 'Signature' | 'Brace' | 'Ident' | 'PatIdent' | 'PatType' | 'TypePath' | 'TypeReference' | 'Path' | 'PathSegment' | 'ReturnType::Type' | 'Generics' | 'AngleBracketedGenericArguments' | 'ExprCall' | 'ExprTry' | 'ExprPath' | 'Stmt::Semi';
 
 export interface LineColumn {
   _type: 'LineColumn';
@@ -28,6 +28,7 @@ export interface BaseNode {
   isTypeOf(typeName: string): boolean;
   hasAbsType(typeName: string): boolean;
   addAbsType(typeName: string): void;
+  getParent(): BaseNode | void;
 }
 
 export interface File extends BaseNode {
