@@ -29,6 +29,9 @@ class Transformer {
       return this.sourceCode.join('\n');
     }
     const lines = this.sourceCode.slice(span.start.line - 1, span.end.line);
+    if (lines.length === 1) {
+      return lines[0].slice(span.start.column, span.end.column);
+    }
     lines[0] = lines[0].slice(span.start.column);
     lines[lines.length - 1] = lines[lines.length - 1].slice(0, span.end.column);
     return lines.join('\n');

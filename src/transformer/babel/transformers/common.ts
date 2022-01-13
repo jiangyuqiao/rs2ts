@@ -48,3 +48,16 @@ register('ExprCall', function (node, c) {
   }
   return callExp;
 });
+
+register('ExprTry', function (node, c) {
+  return c.t(node.expr) as ts.Expression;
+});
+
+register('Local', function (node, c) {
+  let init: ts.Expression;
+  if (node.init) {
+    init = c.t(node.init[1]) as ts.Expression;
+  }
+  const id = c.t((node.pat as rs.PatIdent).ident);
+  return ts.variableDeclaration('const', [ts.variableDeclarator(id, init)])
+});

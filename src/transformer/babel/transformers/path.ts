@@ -10,16 +10,16 @@ function convertSegmentsInExprPath(
   context: Context
 ) {
   const idStrArr = segments.map(
-    s => convertIdentifierNameString(s.ident.to_string, context.options)
+    s => context.t(s.ident)
   );
   if (idStrArr.length === 1) {
-    return ts.identifier(idStrArr[0]);
+    return idStrArr[0];
   }
-  const rootId = ts.identifier(idStrArr.shift());
-  const secondId = ts.identifier(idStrArr.shift());
+  const rootId = idStrArr.shift();
+  const secondId = idStrArr.shift();
   let memberExp = ts.memberExpression(rootId, secondId);
   while (idStrArr.length > 0) {
-    const id = ts.identifier(idStrArr.shift());
+    const id = idStrArr.shift();
     memberExp = ts.memberExpression(memberExp, id);
   }
   return memberExp;
