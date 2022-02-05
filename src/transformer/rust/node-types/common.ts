@@ -1,4 +1,8 @@
-export type NodeType = 'File' | 'ItemFn' | 'Block' | 'Signature' | 'Brace' | 'Ident' | 'PatIdent' | 'PatType' | 'TypePath' | 'TypeReference' | 'Path' | 'PathSegment' | 'ReturnType::Type' | 'Generics' | 'AngleBracketedGenericArguments' | 'ExprCall' | 'ExprTry' | 'ExprPath' | 'Stmt::Semi';
+import { Colon } from ".";
+
+export type NodeType = 'File' | 'ItemFn' | 'Block' | 'Signature' | 'Brace' | 'Ident' | 'PatIdent' | 'PatType' | 'TypePath' | 'TypeReference' | 'Path' | 'PathSegment' | 'ReturnType::Type' | 'Generics' | 'AngleBracketedGenericArguments' |  'Stmt::Semi' | 'Local' |
+'ExprCall' | 'ExprTry' | 'ExprPath' | 'ExprBinary' | 'ExprLit' | 'ExprParen' | 'ExprUnary' | 'ExprArray' | 'ExprAssign' | 'ExprAssignOp' | 'ExprIf' | 'ExprBlock' | 'ExprLoop' | 'ExprWhile' | 'ExprForLoop' | 'ExprBreak' | 'ExprContinue' | 'ExprReturn' |
+'LitStr' | 'LitByteStr' | 'LitByte' | 'LitChar' | 'LitInt' | 'LitFloat' | 'LitBool';
 
 export interface LineColumn {
   _type: 'LineColumn';
@@ -39,4 +43,14 @@ export interface File extends BaseNode {
 export interface Ident extends BaseNode {
   _type: 'Ident';
   to_string: string;
+}
+
+export interface Label extends BaseNode {
+  name: Lifetime,
+  colon_token: Colon,
+}
+
+export interface Lifetime extends BaseNode {
+  apostrophe: Span;
+  ident: Ident;
 }

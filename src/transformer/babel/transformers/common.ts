@@ -23,7 +23,7 @@ register('ItemFn', function (node, c) {
   const fnDeclaration = ts.functionDeclaration(
     c.t(node.sig.ident),
     params,
-    ts.blockStatement(node.block.stmts.map(stmt => c.t(stmt) as any))
+    c.t(node.block)
   );
   if (node.sig.output._type === 'ReturnType::Type') {
     fnDeclaration.returnType = wrapTypeAnnotation(c.t(node.sig.output[1]));
@@ -32,25 +32,11 @@ register('ItemFn', function (node, c) {
 });
 
 register('Stmt::Semi', function (node, c) {
-  return ts.expressionStatement(c.t(node[0]) as ts.Expression);
-});
-
-register('ExprCall', function (node, c) {
-  const callee = c.t(node.func);
-  const params = ((
-    convertPunctuatedToArray(node.args)
-      .filter(n => n._type !== 'Comma') as rs.Expr[])
-      .map(n => c.t(n))
-  ) as ts.Expression[];
-  const callExp = ts.callExpression(callee as ts.Expression, params);
-  if ((node.getParent() as rs.Block)?._type === 'Block') {
-    return ts.returnStatement(callExp);
+  const expr = c.t(node[0]);
+  if (ts.isStatement(expr)) {
+    return expr;
   }
-  return callExp;
-});
-
-register('ExprTry', function (node, c) {
-  return c.t(node.expr) as ts.Expression;
+  return ts.expressionStatement(expr as ts.Expression);
 });
 
 register('Local', function (node, c) {
@@ -60,4 +46,15 @@ register('Local', function (node, c) {
   }
   const id = c.t((node.pat as rs.PatIdent).ident);
   return ts.variableDeclaration('const', [ts.variableDeclarator(id, init)])
+});
+
+register('Block', function (node, c) {
+  const stmts = node.stmts.map((stmt) => {
+    let statement = c.t(stmt);
+    if (ts.isExpression(statement)) {
+      return ts.returnStatement(statement);
+    }
+    return statement;
+  });
+  return ts.blockStatement(stmts);
 });

@@ -3,15 +3,16 @@ import { Expr } from './expr';
 import { Pat } from './pat';
 import { Brace, Let, Semi, Eq } from './token';
 
-export type Stmt = Local | Expr;
+export type Stmt = Local | Expr | Stmt_Semi;
 
 export interface Block extends BaseNode {
   _type: 'Block';
-  stmts: BaseNode[];
+  stmts: Stmt[];
   brace_token: Brace;
 }
 
 export interface Local extends BaseNode {
+  _type: 'Local';
   let_token: Let;
   pat: Pat;
   init?: [Eq, Expr];

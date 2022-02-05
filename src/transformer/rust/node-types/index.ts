@@ -8,3 +8,4 @@ export * from './stmt';
 export * from './type';
 export * from './token';
 export * from './expr';
+export * from './lit';

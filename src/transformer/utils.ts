@@ -1,4 +1,5 @@
-import { Punctuated } from './rust/node-types';
+import * as rs from './rust/node-types';
+import * as ts from '@babel/types';
 import camelCase from "lodash/camelCase";
 import upperFirst from "lodash/upperFirst";
 import { Options } from './types';
@@ -25,6 +26,20 @@ export function convertTypeNameString(name: string, o: Options) {
   return name;
 }
 
-export function convertPunctuatedToArray<T>(punctuated: Punctuated<T>): T[] {
+export function convertPunctuatedToArray<T>(punctuated: rs.Punctuated<T>): T[] {
   return Array.from(punctuated);
+}
+
+export function isAnAssignedExpression(node: rs.Expr) {
+  const parent = node.getParent();
+  if (parent && ['ExprAssignOp', 'ExprAssign', 'Local'].includes(parent._type)) {
+    return true;
+  }
+  return false;
+}
+
+export function wrapByIIFE(stmts: ts.Statement[]) {
+  const fnExp = ts.functionExpression(undefined, [], ts.blockStatement(stmts));
+  const callExp = ts.callExpression(fnExp, []);
+  return callExp;
 }
