@@ -6,21 +6,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="./dist/index.js"></script>
   <style>
-    .code textarea {
-      width: 600px;
-      height: 80vh;
-      resize: none;
+    .code {
+      display: flex;
+      box-sizing: border-box;
+      width: 100%;
+      height: 90vh;
+      padding: 10px 20px;
+      justify-content: space-between;
+    }
+    .editor {
+      flex: 1 1 400px;
     }
   </style>
   <title>rs2js</title>
 </head>
 <body>
   <div class="code">
-    <textarea name="source" id="source" rows="10"></textarea>
-    <textarea name="target" id="target" rows="10"></textarea>
-  </div>
-  <div>
-    <button id="submit">convert</button>
+    <div class="editor" id="source"></div>
+    <div class="editor" id="target"></div>
   </div>
 </body>
 </html>

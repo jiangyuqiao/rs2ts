@@ -1,48 +1,19 @@
 import { transformToTSCode, Options } from './transformer';
 import * as storage from './storage';
+import * as display from './display';
 import debounce from 'lodash/debounce';
 
-const testCode =
-`fn test(x: usize, y: usize) {
-  if (x > y) {
-    x
-  } else {
-    y
-  }
-}
-`;
-
-let submitBtn: HTMLButtonElement;
-let codeInput: HTMLTextAreaElement;
-let codeOutput: HTMLTextAreaElement;
-let lock = false;
-
-function startTransform() {
-  if (lock) {
-    return;
-  }
-  lock = true;
-  const source = codeInput.value;
+function onInputChange() {
+  const source = display.getInput();
+  storage.write(source);
   transformToTSCode(source, { toCamelCase: true }).then((r) => {
-    codeOutput.value = r;
+    display.setOutput(r);
   }).catch((e) => {
     console.error(e);
-  }).finally(() => lock = false);
+  });
 }
 
-function onInputChange() {
-  storage.write(codeInput.value);
-}
-
-window.onload = function () {
-  submitBtn = document.querySelector('#submit');
-  codeInput = document.querySelector('#source');
-  codeOutput = document.querySelector('#target');
-  codeInput.value = storage.read() || testCode;
-  startTransform();
-
-  submitBtn.addEventListener('click', startTransform);
-  codeInput.addEventListener('input', debounce(onInputChange, 1000));
-};
-
-
+display.init().then(() => {
+  display.onInputChange(debounce(onInputChange, 1500));
+  onInputChange();
+});

@@ -19,19 +19,24 @@
   },
   "homepage": "https://github.com/jiangyuqiao/rs2ts#readme",
   "devDependencies": {
-    "@types/lodash": "^4.14.178",
-    "fork-ts-checker-webpack-plugin": "^6.5.0",
-    "static-server": "^2.2.1",
-    "ts-loader": "^9.2.6",
-    "typescript": "^4.5.4",
-    "webpack": "^5.65.0",
-    "webpack-cli": "^4.9.1"
+    "@types/lodash": "4.14.178",
+    "css-loader": "6.6.0",
+    "file-loader": "6.2.0",
+    "fork-ts-checker-webpack-plugin": "6.5.0",
+    "monaco-editor-webpack-plugin": "7.0.1",
+    "static-server": "2.2.1",
+    "style-loader": "3.3.1",
+    "ts-loader": "9.2.6",
+    "typescript": "4.5.4",
+    "webpack": "5.65.0",
+    "webpack-cli": "4.9.1"
   },
   "dependencies": {
-    "@babel/generator": "^7.16.5",
-    "@babel/types": "^7.16.0",
+    "@babel/generator": "7.16.5",
+    "@babel/types": "7.16.0",
     "astexplorer-syn": "file:astexplorer_syn",
-    "lodash": "^4.17.21",
-    "ts-morph": "^13.0.2"
+    "lodash": "4.17.21",
+    "monaco-editor": "0.32.1",
+    "ts-morph": "13.0.2"
   }
 }

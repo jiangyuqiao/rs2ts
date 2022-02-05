@@ -1,5 +1,6 @@
 const path = require('path');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 module.exports = {
   // mode: "production",
@@ -29,10 +30,23 @@ module.exports = {
         options: {
           transpileOnly: true
         }
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.ttf$/,
+        use: ['file-loader']
       }
     ]
   },
-  plugins: [new ForkTsCheckerWebpackPlugin()],
+  plugins: [
+    new ForkTsCheckerWebpackPlugin(),
+    new MonacoWebpackPlugin({
+      languages: ['typescript', 'rust']
+    })
+  ],
   devtool: 'source-map',
   experiments: {
     asyncWebAssembly: true
