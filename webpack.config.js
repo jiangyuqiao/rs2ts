@@ -44,6 +44,7 @@ module.exports = {
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
     new MonacoWebpackPlugin({
+      features: ['!accessibilityHelp', '!colorPicker', '!snippet', '!codeAction', '!codelens', '!toggleHighContrast', '!toggleTabFocusMode'],
       languages: ['typescript', 'rust']
     })
   ],
