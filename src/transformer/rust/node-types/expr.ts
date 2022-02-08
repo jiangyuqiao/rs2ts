@@ -1,8 +1,12 @@
 import { BaseNode } from './common';
 import { Question } from './token';
-import { Comma, Paren, Path, Punctuated, BinOp, Lit, UnOp, Bracket, Eq, If, Block, Else, Label, While, Pat } from '.';
+import { Comma, Paren, Path, Punctuated, BinOp, Lit, UnOp, Bracket, Eq, If, Block, Else, Label, While, Pat, Or, ReturnType_Type, ReturnType_Default } from '.';
 
-export type Expr = ExprCall | ExprTry | ExprPath | ExprBinary | ExprUnary | ExprLit | ExprParen | ExprArray | ExprAssign | ExprAssignOp | ExprIf | ExprBlock | ExprLoop | ExprWhile | ExprForLoop | ExprBreak | ExprContinue | ExprReturn;
+export const ExprTypeNames = ['ExprCall', 'ExprTry', 'ExprPath', 'ExprBinary', 'ExprUnary', 'ExprLit', 'ExprParen', 'ExprArray', 'ExprAssign', 'ExprAssignOp', 'ExprIf', 'ExprBlock', 'ExprLoop', 'ExprWhile', 'ExprForLoop', 'ExprBreak', 'ExprContinue', 'ExprReturn', 'ExprClosure', 'ExprAsync', 'ExprAwait', 'ExprBox', 'ExprCast', 'ExprField', 'ExprGroup', 'ExprIndex', 'ExprLet', 'ExprMacro', 'ExprMatch', 'ExprMethodCall', 'ExprRange', 'ExprReference', 'ExprRepeat', 'ExprStruct', 'ExprTry', 'ExprTryBlock', 'ExprTuple', 'ExprType', 'ExprUnsafe'] as const;
+export type ExprTypeName = typeof ExprTypeNames[number];
+
+export type Expr = ExprCall | ExprTry | ExprPath | ExprBinary | ExprUnary | ExprLit | ExprParen | ExprArray | ExprAssign | ExprAssignOp | ExprIf | ExprBlock | ExprLoop | ExprWhile | ExprForLoop | ExprBreak | ExprContinue | ExprReturn | ExprClosure;
+
 
 export interface ExprCall extends BaseNode {
   _type: 'ExprCall';
@@ -125,6 +129,18 @@ export interface ExprReturn extends BaseNode {
   expr?: Expr;
 }
 
+export interface ExprClosure extends BaseNode {
+  _type: 'ExprClosure';
+  asyncness?: undefined; // Token![async]
+  movability?: undefined; // Token![static]
+  capture?: undefined; // Token![move]
+  or1_token: Or;
+  or2_token: Or;
+  inputs: Punctuated<Pat | Comma>;
+  output: ReturnType_Default | ReturnType_Type;
+  body: Expr;
+}
+
 /** TODO */
 export interface ExprAsync extends BaseNode {}
 /** TODO */
@@ -133,8 +149,6 @@ export interface ExprAwait extends BaseNode {}
 export interface ExprBox extends BaseNode {}
 /** TODO */
 export interface ExprCast extends BaseNode {}
-/** TODO */
-export interface ExprClosure extends BaseNode {}
 /** TODO */
 export interface ExprField extends BaseNode {}
 /** TODO */

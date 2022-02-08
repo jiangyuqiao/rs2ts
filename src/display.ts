@@ -9,6 +9,7 @@ let outputEditor: editor.IStandaloneCodeEditor;
 const CommonOptions: editor.IStandaloneEditorConstructionOptions = {
   codeLens: false,
   minimap: { enabled: false },
+  wordWrap: 'on'
 };
 
 const testCode =

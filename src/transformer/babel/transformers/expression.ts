@@ -172,6 +172,16 @@ register('ExprReturn', function (node, c) {
   return stmt;
 });
 
+register('ExprClosure', function (node, c) {
+  const params = convertPunctuatedToArray(node.inputs)
+    .filter(n => n._type !== 'Comma')
+    .map(n => c.t(n as rs.Pat));
+  return ts.arrowFunctionExpression(
+    params,
+    c.t(node.body) as ts.Expression
+  );
+});
+
 register('ExprLit', function (node, c) {
   return c.t(node.lit) as ts.Literal;
 });

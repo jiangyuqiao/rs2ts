@@ -1,8 +1,8 @@
 import { Colon } from ".";
+import { PatTypeName } from './pat';
+import { ExprTypeName } from './expr';
 
-export type NodeType = 'File' | 'ItemFn' | 'Block' | 'Signature' | 'Brace' | 'Ident' | 'PatIdent' | 'PatType' | 'TypePath' | 'TypeReference' | 'Path' | 'PathSegment' | 'ReturnType::Type' | 'Generics' | 'AngleBracketedGenericArguments' |  'Stmt::Semi' | 'Local' |
-'ExprCall' | 'ExprTry' | 'ExprPath' | 'ExprBinary' | 'ExprLit' | 'ExprParen' | 'ExprUnary' | 'ExprArray' | 'ExprAssign' | 'ExprAssignOp' | 'ExprIf' | 'ExprBlock' | 'ExprLoop' | 'ExprWhile' | 'ExprForLoop' | 'ExprBreak' | 'ExprContinue' | 'ExprReturn' |
-'LitStr' | 'LitByteStr' | 'LitByte' | 'LitChar' | 'LitInt' | 'LitFloat' | 'LitBool';
+export type NodeType = 'File' | 'ItemFn' | 'Block' | 'Signature' | 'Brace' | 'Ident' | 'TypePath' | 'TypeReference' | 'Path' | 'PathSegment' | 'ReturnType::Type' | 'Generics' | 'AngleBracketedGenericArguments' |  'Stmt::Semi' | 'Local' | 'LitStr' | 'LitByteStr' | 'LitByte' | 'LitChar' | 'LitInt' | 'LitFloat' | 'LitBool' | PatTypeName | ExprTypeName;
 
 export interface LineColumn {
   _type: 'LineColumn';

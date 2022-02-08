@@ -2,6 +2,9 @@ import { BaseNode, Ident } from './common';
 import { Type } from './type';
 import { Colon } from './token';
 
+export const PatTypeNames = ['PatBox', 'PatIdent', 'PatLit', 'PatMacro', 'PatOr', 'PatPath', 'PatRange', 'PatReference', 'PatRest', 'PatSlice', 'PatStruct', 'PatTuple', 'PatTupleStruct', 'PatType', 'PatWild'] as const;
+export type PatTypeName = typeof PatTypeNames[number];
+
 export type Pat = PatIdent | PatType;
 
 export interface PatIdent extends BaseNode {

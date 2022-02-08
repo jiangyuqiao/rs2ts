@@ -18,6 +18,7 @@ type _NodeMappings =
   { type: 'Stmt::Semi', source: rs.Stmt_Semi, target: ts.Statement } |
   { type: 'ExprCall', source: rs.ExprCall, target: ts.CallExpression } |
   { type: 'ExprIf', source: rs.ExprIf, target: ts.CallExpression | ts.IfStatement } |
+  { type: 'ExprClosure', source: rs.ExprClosure, target: ts.ArrowFunctionExpression } |
   { type: 'ExprLoop', source: rs.ExprLoop, target: ts.CallExpression | ts.WhileStatement } |
   { type: 'ExprWhile', source: rs.ExprWhile, target: ts.WhileStatement } |
   { type: 'ExprForLoop', source: rs.ExprForLoop, target: ts.ForOfStatement } |

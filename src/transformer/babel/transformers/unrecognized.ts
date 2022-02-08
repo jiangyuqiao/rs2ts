@@ -20,7 +20,7 @@ export function processUnrecognizedNode(node: rs.BaseNode, c: Context): ts.BaseN
       })], []
     ));
   }
-  if (node._type.startsWith('Expr')) {
+  if (node.hasAbsType('Expr')) {
     let altTxt = `/* Unrecognized Expression(${node._type}) */`;
     if (sourceCode) {
       if (hasMultiLines) {

@@ -1,6 +1,6 @@
 import { BaseNode } from '../node-types';
 import { Node } from './node-methods';
-import { Processors } from './processors';
+import { Processors, commonProcessor } from './processors';
 
 const ignoreTypes = ['Span', 'LineColumn'];
 const ignoreKeys = ['_type', '_parent'];
@@ -29,6 +29,7 @@ export function preProcess(node: BaseNode, parent?: any) {
   if (processor) {
     processor(node);
   }
+  commonProcessor(node);
 
   Object.keys(node).forEach((key) => {
     if (ignoreKeys.includes(key)) {

@@ -15,19 +15,17 @@ export interface ItemFn extends BaseNode {
 
 export interface Signature extends BaseNode {
   _type: 'Signature'
-  abi: undefined;
-  asyncness: undefined;
-  constness: undefined;
-  unsafety: undefined;
-  variadic: undefined;
-  fn_token: Token;
+  constness?: Token; // Token![const]
+  asyncness?: Token; // Token![async]
+  unsafety?: Token; // Token![unsafe]
+  abi?: undefined; // Abi
+  fn_token: Token; // Token![fn]
   ident: Ident;
-  inputs: Punctuated<PatType | Comma>;
-  output: ReturnType_Default | ReturnType_Type;
   generics: Generics;
-  /*
-  paren_token: {_type: 'Paren', span: {…}}
-  */
+  // paren_token: {_type: 'Paren', span: {…}}
+  inputs: Punctuated<PatType/*FnArg*/ | Comma>;
+  variadic?: undefined; // Variadic
+  output: ReturnType_Default | ReturnType_Type;
 }
 
 export interface ReturnType_Default {

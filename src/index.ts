@@ -9,6 +9,9 @@ function onInputChange() {
   transformToTSCode(source, { toCamelCase: true }).then((r) => {
     display.setOutput(r);
   }).catch((e) => {
+    if (typeof e.toString === 'function') {
+      display.setOutput(e.toString())
+    }
     console.error(e);
   });
 }
