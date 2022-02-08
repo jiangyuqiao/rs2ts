@@ -1,6 +1,6 @@
 import { BaseNode, Ident } from './common';
-import { Type } from './type';
-import { Colon } from './token';
+import { Type } from './ty';
+import { Colon, Mut } from './token';
 
 export const PatTypeNames = ['PatBox', 'PatIdent', 'PatLit', 'PatMacro', 'PatOr', 'PatPath', 'PatRange', 'PatReference', 'PatRest', 'PatSlice', 'PatStruct', 'PatTuple', 'PatTupleStruct', 'PatType', 'PatWild'] as const;
 export type PatTypeName = typeof PatTypeNames[number];
@@ -11,7 +11,7 @@ export interface PatIdent extends BaseNode {
   _type: 'PatIdent';
   ident: Ident;
   by_ref: undefined;
-  mutability: undefined;
+  mutability: Mut;
   subpat: undefined;
 }
 

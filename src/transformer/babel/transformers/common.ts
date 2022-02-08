@@ -3,7 +3,7 @@ import * as ts from '@babel/types';
 import { register } from './registry';
 import { wrapTypeAnnotation } from './type-annotation';
 import {
-  convertPunctuatedToArray, convertIdentifierNameString
+  convertPunctuatedToArray, convertIdentifierNameString, getMutabilityFromPat
 } from '../../utils';
 
 register('File', function (node, c) {
@@ -44,8 +44,9 @@ register('Local', function (node, c) {
   if (node.init) {
     init = c.t(node.init[1]) as ts.Expression;
   }
-  const id = c.t((node.pat as rs.PatIdent).ident);
-  return ts.variableDeclaration('const', [ts.variableDeclarator(id, init)])
+  const id = c.t(node.pat);
+  const mutable = getMutabilityFromPat(node.pat);
+  return ts.variableDeclaration(mutable ? 'let' : 'const', [ts.variableDeclarator(id, init)])
 });
 
 register('Block', function (node, c) {

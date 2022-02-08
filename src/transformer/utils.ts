@@ -8,6 +8,7 @@ function isUpperCase(t: string) {
   return t.toUpperCase() === t;
 }
 
+// TODO: move to post-process
 export function convertIdentifierNameString(name: string, o: Options) {
   if (o.toCamelCase) {
     return camelCase(name);
@@ -42,4 +43,13 @@ export function wrapByIIFE(stmts: ts.Statement[]) {
   const fnExp = ts.functionExpression(undefined, [], ts.blockStatement(stmts));
   const callExp = ts.callExpression(fnExp, []);
   return callExp;
+}
+
+export function getMutabilityFromPat(pat: rs.Pat) {
+  if (pat._type === 'PatIdent') {
+    return Boolean(pat.mutability);
+  } if (pat._type === 'PatType') {
+    return Boolean(pat.pat.mutability);
+  }
+  return true;
 }

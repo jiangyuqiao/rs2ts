@@ -1,8 +1,9 @@
 import { Colon } from ".";
 import { PatTypeName } from './pat';
 import { ExprTypeName } from './expr';
+import { TokenTypeName } from './token';
 
-export type NodeType = 'File' | 'ItemFn' | 'Block' | 'Signature' | 'Brace' | 'Ident' | 'TypePath' | 'TypeReference' | 'Path' | 'PathSegment' | 'ReturnType::Type' | 'Generics' | 'AngleBracketedGenericArguments' |  'Stmt::Semi' | 'Local' | 'LitStr' | 'LitByteStr' | 'LitByte' | 'LitChar' | 'LitInt' | 'LitFloat' | 'LitBool' | PatTypeName | ExprTypeName;
+export type NodeType = 'File' | 'ItemFn' | 'Block' | 'Signature' | 'Brace' | 'Ident' | 'TypePath' | 'TypeReference' | 'Path' | 'PathSegment' | 'ReturnType::Type' | 'Generics' | 'AngleBracketedGenericArguments' |  'Stmt::Semi' | 'Local' | 'LitStr' | 'LitByteStr' | 'LitByte' | 'LitChar' | 'LitInt' | 'LitFloat' | 'LitBool' | PatTypeName | ExprTypeName | TokenTypeName;
 
 export interface LineColumn {
   _type: 'LineColumn';

@@ -1,7 +1,10 @@
-import { Span } from './common';
+import { Span, BaseNode } from './common';
 
-export interface Token {
-  _type: string;
+export const TokenTypeNames = ['Comma', 'Colon', 'Colon2', 'RArrow', 'Brace', 'Bracket', 'Semi', 'Let', 'Mut', 'If', 'While', 'Else', 'Eq', 'Question', 'Paren', 'Add', 'Sub', 'Star', 'Div', 'Rem', 'AndAnd', 'OrOr', 'Caret', 'And', 'Or', 'Shl', 'Shr', 'EqEq', 'Lt', 'Le', 'Ne', 'Ge', 'Gt', 'AddEq', 'SubEq', 'MulEq', 'DivEq', 'RemEq', 'CaretEq', 'AndEq', 'OrEq', 'ShlEq', 'ShrEq', 'Bang'] as const;
+export type TokenTypeName = typeof TokenTypeNames[number];
+
+export interface Token extends BaseNode {
+  _type: TokenTypeName;
   span: Span;
 }
 
@@ -35,6 +38,10 @@ export interface Semi extends Token {
 
 export interface Let extends Token {
   _type: 'Let';
+}
+
+export interface Mut extends Token {
+  _type: 'Mut';
 }
 
 export interface If extends Token {

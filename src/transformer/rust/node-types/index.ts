@@ -5,7 +5,7 @@ export * from './item';
 export * from './pat';
 export * from './path';
 export * from './stmt';
-export * from './type';
+export * from './ty';
 export * from './token';
 export * from './expr';
 export * from './lit';

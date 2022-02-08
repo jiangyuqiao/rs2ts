@@ -4,6 +4,7 @@ import set from 'lodash/set';
 import { register } from './registry';
 import {
   convertPunctuatedToArray,
+  getMutabilityFromPat,
   isAnAssignedExpression,
   wrapByIIFE
 } from '../../utils';
@@ -139,9 +140,10 @@ register('ExprLoop', function (node, c) {
 });
 
 register('ExprForLoop', function (node, c) {
+  const mutable = getMutabilityFromPat(node.pat);
   const stmt = ts.forOfStatement(
     // TODO: pattern transformation
-    ts.variableDeclaration('let', [ts.variableDeclarator(c.t(node.pat))]),
+    ts.variableDeclaration(mutable ? 'let' : 'const', [ts.variableDeclarator(c.t(node.pat))]),
     c.t(node.expr) as ts.Expression,
     c.t(node.body)
   );

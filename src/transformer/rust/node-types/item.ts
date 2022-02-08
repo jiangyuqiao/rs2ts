@@ -3,7 +3,7 @@ import { Visibility } from './data';
 import { Block } from './stmt';
 import { Generics } from './generics';
 import { PatType } from './pat';
-import { Type } from './type';
+import { Type } from './ty';
 import { Token, Comma, RArrow } from './token';
 
 export interface ItemFn extends BaseNode {

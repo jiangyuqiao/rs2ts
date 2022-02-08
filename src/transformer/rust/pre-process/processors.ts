@@ -1,6 +1,6 @@
 import * as t from '../node-types';
 import { addAbsType } from './node-methods';
-import { ExprTypeNames, PatTypeNames } from '../node-types';
+import { ExprTypeNames, PatTypeNames, TypeNames } from '../node-types';
 
 export const Processors: { [key in t.NodeType]?: (node: t.BaseNode) => void } = {
   Block(node: t.Block) {
@@ -17,6 +17,9 @@ export function commonProcessor(node: t.BaseNode) {
   if (isPat(node)) {
     addAbsType(node, 'Pat');
   }
+  if (isType(node)) {
+    addAbsType(node, 'Type');
+  }
 }
 
 function isExpr(node: t.BaseNode) {
@@ -30,5 +33,6 @@ function isPat(node: t.BaseNode) {
 }
 
 function isType(node: t.BaseNode) {
-  // TODO
+  return node._type.startsWith('Type') &&
+    (TypeNames as unknown as string[]).includes(node._type);
 }

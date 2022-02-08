@@ -1,5 +1,5 @@
 import { BaseNode, Ident, Punctuated } from './common';
-import { Type } from './type';
+import { Type } from './ty';
 import { Comma, Colon2, Gt, Lt } from './token';
 
 export type GenericArgument =

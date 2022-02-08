@@ -2,19 +2,8 @@ import { BaseNode } from './common';
 import { And } from './token';
 import { Path } from './path'
 
-export interface TypePath extends BaseNode {
-  _type: 'TypePath';
-  path: Path;
-  qself: undefined;
-}
-
-export interface TypeReference extends BaseNode {
-  _type: 'TypeReference';
-  and_token: And;
-  elem: Type;
-  lifetime: undefined
-  mutability: undefined
-}
+export const TypeNames = ['TypeArray', 'TypeBareFn', 'TypeGroup', 'TypeImplTrait', 'TypeInfer', 'TypeMacro', 'TypeNever', 'TypeParen', 'TypePath', 'TypePtr', 'TypeReference', 'TypeSlice', 'TypeTraitObject', 'TypeTuple'] as const;
+export type TypeName = typeof TypeNames[number];
 
 export type Type =
   // TypeArray | // A fixed size array type: `[T; n]`.
@@ -33,3 +22,17 @@ export type Type =
   // TypeTuple | // A tuple type: `(A, B, C, String)`.
   // TokenStream | // Tokens in type position not interpreted by Syn.
 ;
+
+export interface TypePath extends BaseNode {
+  _type: 'TypePath';
+  path: Path;
+  qself: undefined;
+}
+
+export interface TypeReference extends BaseNode {
+  _type: 'TypeReference';
+  and_token: And;
+  elem: Type;
+  lifetime: undefined
+  mutability: undefined
+}

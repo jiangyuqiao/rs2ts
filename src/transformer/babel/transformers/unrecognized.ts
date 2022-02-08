@@ -12,26 +12,30 @@ export function processUnrecognizedNode(node: rs.BaseNode, c: Context): ts.BaseN
     }
   }
   if (node.hasAbsType('Stmt')) {
-    return ts.expressionStatement(ts.templateLiteral(
-      [ts.templateElement({
-        raw: `/* Unrecognized Statement(${node._type}) */` + (
-          sourceCode ? `\n${sourceCode}\n` : ''
-        )
-      })], []
+    const comment = ` Unrecognized Statement(${node._type}) `;
+    const altStmt = ts.expressionStatement(ts.templateLiteral(
+      [ts.templateElement({ raw: sourceCode })], []
     ));
+    ts.addComment(altStmt, 'leading', comment);
+    return altStmt;
   }
   if (node.hasAbsType('Expr')) {
-    let altTxt = `/* Unrecognized Expression(${node._type}) */`;
-    if (sourceCode) {
-      if (hasMultiLines) {
-        altTxt += `\n${sourceCode}\n`;
-      } else {
-        altTxt += ` ${sourceCode}`;
-      }
-    }
-    return ts.templateLiteral(
-      [ts.templateElement({ raw: altTxt })], []
+    const comment = ` Unrecognized Expression(${node._type}) `;
+    const altExpr = ts.templateLiteral(
+      [ts.templateElement({ raw: sourceCode })], []
     );
+    ts.addComment(altExpr, 'leading', comment);
+    return altExpr;
+  }
+  if (node.hasAbsType('Type')) {
+    const typeAnnotation = ts.genericTypeAnnotation(ts.identifier(`__UNRECOGNIZED__${node._type}`));
+    ts.addComment(typeAnnotation, 'trailing', sourceCode, false);
+    return typeAnnotation;
+  }
+  if (node.hasAbsType('Pat')) {
+    const id = ts.identifier(`__UNRECOGNIZED__${node._type}`);
+    ts.addComment(id, 'trailing', sourceCode, false);
+    return id;
   }
   throw new Error(`unrecognized node: ${node._type}`);
 }
