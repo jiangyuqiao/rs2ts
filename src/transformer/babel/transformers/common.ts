@@ -18,7 +18,7 @@ register('Ident', function (node, c) {
 
 register('ItemFn', function (node, c) {
   const params = convertPunctuatedToArray(node.sig.inputs)
-    .filter(n => n._type !== 'Comma')
+    .filter(n => n.hasAbsType('Pat'))
     .map(i => c.t(i as rs.Pat));
   const fnDeclaration = ts.functionDeclaration(
     c.t(node.sig.ident),
