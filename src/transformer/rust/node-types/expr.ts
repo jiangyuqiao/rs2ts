@@ -1,6 +1,6 @@
 import { BaseNode } from './common';
 import { Question } from './token';
-import { Comma, Paren, Path, Punctuated, BinOp, Lit, UnOp, Bracket, Eq, If, Block, Else, Label, While, Pat, Or, ReturnType_Type, ReturnType_Default } from '.';
+import { Comma, Paren, Path, Punctuated, BinOp, Lit, UnOp, Bracket, Eq, If, Block, Else, Label, While, Pat, Or, ReturnType_Type, ReturnType_Default, Ident } from '.';
 
 export const ExprTypeNames = ['ExprCall', 'ExprTry', 'ExprPath', 'ExprBinary', 'ExprUnary', 'ExprLit', 'ExprParen', 'ExprArray', 'ExprAssign', 'ExprAssignOp', 'ExprIf', 'ExprBlock', 'ExprLoop', 'ExprWhile', 'ExprForLoop', 'ExprBreak', 'ExprContinue', 'ExprReturn', 'ExprClosure', 'ExprAsync', 'ExprAwait', 'ExprBox', 'ExprCast', 'ExprField', 'ExprGroup', 'ExprIndex', 'ExprLet', 'ExprMacro', 'ExprMatch', 'ExprMethodCall', 'ExprRange', 'ExprReference', 'ExprRepeat', 'ExprStruct', 'ExprTry', 'ExprTryBlock', 'ExprTuple', 'ExprType', 'ExprUnsafe'] as const;
 export type ExprTypeName = typeof ExprTypeNames[number];
@@ -13,6 +13,25 @@ export interface ExprCall extends BaseNode {
   func: Expr;
   paren_token: Paren;
   args: Punctuated<Expr | Comma>;
+}
+
+export interface ExprMethodCall extends BaseNode {
+  receiver: Expr;
+  dot_token: undefined; // Token![.]
+  method: Ident;
+  turbofish?: undefined; // MethodTurbofish
+  paren_token: Paren;
+  args: Punctuated<Expr | Comma>;
+}
+
+export interface Index extends BaseNode {
+  index: number;
+}
+
+export interface ExprField extends BaseNode {
+  base: Expr;
+  dot_token: undefined; // Token![.]
+  member: Ident | Index;
 }
 
 export interface ExprTry extends BaseNode {
@@ -150,8 +169,6 @@ export interface ExprBox extends BaseNode {}
 /** TODO */
 export interface ExprCast extends BaseNode {}
 /** TODO */
-export interface ExprField extends BaseNode {}
-/** TODO */
 export interface ExprGroup extends BaseNode {}
 /** TODO */
 export interface ExprIndex extends BaseNode {}
@@ -161,8 +178,6 @@ export interface ExprLet extends BaseNode {}
 export interface ExprMacro extends BaseNode {}
 /** TODO */
 export interface ExprMatch extends BaseNode {}
-/** TODO */
-export interface ExprMethodCall extends BaseNode {}
 /** TODO */
 export interface ExprRange extends BaseNode {}
 /** TODO */

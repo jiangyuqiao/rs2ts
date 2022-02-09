@@ -12,13 +12,21 @@ import { Token } from '../../rust/node-types';
 
 register('ExprCall', function (node, c) {
   const callee = c.t(node.func);
-  const params = ((
-    convertPunctuatedToArray(node.args)
-      .filter(n => n._type !== 'Comma') as rs.Expr[])
-      .map(n => c.t(n))
-  ) as ts.Expression[];
+  const params = convertPunctuatedToArray(node.args)
+    .filter(n => n.hasAbsType('Expr'))
+    .map(n => c.t(n) as ts.Expression);
   const callExp = ts.callExpression(callee as ts.Expression, params);
   return callExp;
+});
+
+register('ExprMethodCall', function (node, c) {
+  const memberExp = ts.memberExpression(
+    c.t(node.receiver) as ts.Expression, c.t(node.method)
+  );
+  const params = convertPunctuatedToArray(node.args)
+    .filter(n => n.hasAbsType('Expr'))
+    .map(n => c.t(n) as ts.Expression);
+  return ts.callExpression(memberExp, params);
 });
 
 register('ExprTry', function (node, c) {
