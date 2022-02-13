@@ -25,10 +25,12 @@ export interface ExprMethodCall extends BaseNode {
 }
 
 export interface Index extends BaseNode {
+  _type: 'Index';
   index: number;
 }
 
 export interface ExprField extends BaseNode {
+  _type: 'ExprField';
   base: Expr;
   dot_token: undefined; // Token![.]
   member: Ident | Index;

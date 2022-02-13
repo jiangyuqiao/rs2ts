@@ -29,6 +29,21 @@ register('ExprMethodCall', function (node, c) {
   return ts.callExpression(memberExp, params);
 });
 
+register('ExprField', function (node, c) {
+  let property: ts.Identifier | ts.Expression;
+  let computed = false;
+  if (rs.isIdent(node.member)) {
+    property = c.t(node.member);
+  } else if (rs.isIndex(node.member)) {
+    property = ts.numericLiteral(node.member.index);
+    computed = true;
+  }
+  const memberExp = ts.memberExpression(
+    c.t(node.base) as ts.Expression, property, computed
+  );
+  return memberExp;
+});
+
 register('ExprTry', function (node, c) {
   return c.t(node.expr) as ts.Expression;
 });

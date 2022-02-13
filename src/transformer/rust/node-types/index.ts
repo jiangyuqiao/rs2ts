@@ -9,3 +9,4 @@ export * from './ty';
 export * from './token';
 export * from './expr';
 export * from './lit';
+export * from './predicates';
