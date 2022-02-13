@@ -1,8 +1,8 @@
 import * as rs from '../../rust/node-types';
 import * as ts from '@babel/types';
-import { convertPunctuatedToArray, convertIdentifierNameString } from "../../utils";
+import { convertPunctuatedToArray, convertIdentifierNameString } from '../../utils';
 import { Context } from '../types';
-import { register } from "./registry";
+import { register } from './registry';
 import { convertSegmentsInTypePath } from './type-annotation';
 
 function convertSegmentsInExprPath(
@@ -30,16 +30,18 @@ register('ExprPath', function (node, c) {
 });
 
 register('Path', function (node, c) {
-  const segments = convertPunctuatedToArray(node.segments).filter(n => n._type === 'PathSegment') as rs.PathSegment[];;
+  const segments = convertPunctuatedToArray(node.segments).filter(n => n.isTypeOf('PathSegment')) as rs.PathSegment[];;
   if (segments.length === 0) {
     throw new Error();
   }
 
-  const parentType = (node.getParent() as rs.TypePath | rs.ExprPath)?._type;
-  if (parentType === 'TypePath') {
-    return convertSegmentsInTypePath(segments, c);
-  } else if (parentType === 'ExprPath') {
-    return convertSegmentsInExprPath(segments, c);
+  const parentNode = node.getParent();
+  if (parentNode) {
+    if (parentNode.isTypeOf('TypePath')) {
+      return convertSegmentsInTypePath(segments, c);
+    } else if (parentNode.isTypeOf('ExprPath')) {
+      return convertSegmentsInExprPath(segments, c);
+    }
   }
   throw new Error('unrecognized Path node');
 });

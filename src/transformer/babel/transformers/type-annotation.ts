@@ -7,6 +7,7 @@ import {
   convertPunctuatedToArray
 } from '../../utils';
 import { Context } from '../types';
+import { isTypePath } from '../../rust/node-types';
 
 export function wrapTypeAnnotation(node?: ts.GenericTypeAnnotation): ts.TypeAnnotation | undefined {
   return node ? ts.typeAnnotation(node) : undefined;
@@ -36,8 +37,8 @@ function convertToGenericTypeParams(
   transformerContext: Context
 ): BaseTypeAnnotation[] {
   const args = convertPunctuatedToArray(item.args)
-    .filter(n => n._type === 'TypePath') as rs.TypePath[];
-  return args.map(path => transformerContext.t(path as rs.TypePath));
+    .filter(n => isTypePath(n));
+  return args.map(path => transformerContext.t(path));
 }
 
 function generateGenericTypeAnnotation(

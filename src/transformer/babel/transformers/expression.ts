@@ -13,7 +13,7 @@ import { Token } from '../../rust/node-types';
 register('ExprCall', function (node, c) {
   const callee = c.t(node.func);
   const params = convertPunctuatedToArray(node.args)
-    .filter(n => n.hasAbsType('Expr'))
+    .filter(n => rs.isExpr(n))
     .map(n => c.t(n) as ts.Expression);
   const callExp = ts.callExpression(callee as ts.Expression, params);
   return callExp;
@@ -24,7 +24,7 @@ register('ExprMethodCall', function (node, c) {
     c.t(node.receiver) as ts.Expression, c.t(node.method)
   );
   const params = convertPunctuatedToArray(node.args)
-    .filter(n => n.hasAbsType('Expr'))
+    .filter(n => rs.isExpr(n))
     .map(n => c.t(n) as ts.Expression);
   return ts.callExpression(memberExp, params);
 });
@@ -87,9 +87,9 @@ const OperatorMap = {
 };
 
 function getOperator(token: Token) {
-  const operator = OperatorMap[token._type];
+  const operator = OperatorMap[token.getType()];
   if (!operator) {
-    throw new Error(`unrecognized binary operator: ${token._type}`);
+    throw new Error(`unrecognized binary operator: ${token.getType()}`);
   }
   return operator;
 }
@@ -104,15 +104,15 @@ register('ExprBinary', function (node, c) {
 });
 
 register('ExprUnary', function (node, c) {
-  if (node.op._type === 'Star') {
+  if (node.op.isTypeOf('Star')) {
     return c.t(node);
   }
-  const operator = OperatorMap[node.op._type];
+  const operator = getOperator(node.op);
   return ts.unaryExpression(operator as '-' | '!', c.t(node.expr) as ts.Expression);
 });
 
 register('ExprArray', function (node, c) {
-  const elements = convertPunctuatedToArray(node.elems).filter(e => e._type !== 'Comma') as rs.Expr[];
+  const elements = convertPunctuatedToArray(node.elems).filter(e => !rs.isComma(e));
   return ts.arrayExpression(elements.map(e => c.t(e)) as ts.Expression[]);
 });
 
@@ -199,8 +199,8 @@ register('ExprReturn', function (node, c) {
 
 register('ExprClosure', function (node, c) {
   const params = convertPunctuatedToArray(node.inputs)
-    .filter(n => n._type !== 'Comma')
-    .map(n => c.t(n as rs.Pat));
+    .filter(n => !rs.isComma(n))
+    .map(n => c.t(n));
   return ts.arrowFunctionExpression(
     params,
     c.t(node.body) as ts.Expression

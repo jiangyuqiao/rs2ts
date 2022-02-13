@@ -28,7 +28,7 @@ export interface Signature extends BaseNode {
   output: ReturnType_Default | ReturnType_Type;
 }
 
-export interface ReturnType_Default {
+export interface ReturnType_Default extends BaseNode {
   _type: 'ReturnType::Default';
 }
 

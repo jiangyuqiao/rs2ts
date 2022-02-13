@@ -1,4 +1,4 @@
-import { BaseNode } from ".";
+import { BaseNode } from './common';
 
 export type Lit = LitStr | LitByteStr | LitByte | LitChar | LitInt | LitFloat | LitBool | Literal;
 

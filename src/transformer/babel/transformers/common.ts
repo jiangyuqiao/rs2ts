@@ -18,14 +18,14 @@ register('Ident', function (node, c) {
 
 register('ItemFn', function (node, c) {
   const params = convertPunctuatedToArray(node.sig.inputs)
-    .filter(n => n.hasAbsType('Pat'))
+    .filter(n => rs.isPat(n))
     .map(i => c.t(i as rs.Pat));
   const fnDeclaration = ts.functionDeclaration(
     c.t(node.sig.ident),
     params,
     c.t(node.block)
   );
-  if (node.sig.output._type === 'ReturnType::Type') {
+  if (rs.hasExplicitReturnType(node.sig.output)) {
     fnDeclaration.returnType = wrapTypeAnnotation(c.t(node.sig.output[1]));
   }
   return fnDeclaration;

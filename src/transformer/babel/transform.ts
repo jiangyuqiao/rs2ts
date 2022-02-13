@@ -15,7 +15,7 @@ class Transformer {
   }
 
   transformTreeNode = (node) => {
-    const transformer = getTransformer(node._type);
+    const transformer = getTransformer(node.getType());
     return transformer(node, {
       options: this.options,
       transform: this.transformTreeNode as NodeTransformer,

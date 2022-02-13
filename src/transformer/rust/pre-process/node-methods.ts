@@ -1,11 +1,11 @@
-import { BaseNode, NodeType, Span } from '../node-types';
+import { BaseNode, NodeType, Span, AbstractType } from '../node-types';
 
-interface AbstractType {
-  name: string;
-  type?: AbstractType;
+interface AbstractTypeProperty {
+  name: AbstractType;
+  type?: AbstractTypeProperty;
 }
 
-export function addAbsType(node: BaseNode, typeName: string) {
+export function addAbsType(node: BaseNode, typeName: AbstractType) {
   const absType = { name: typeName };
 
   if (!(node as Node)._absType) {
@@ -25,14 +25,22 @@ export class Node implements BaseNode {
   attrs: any[];
   span: Span;
 
-  _absType?: AbstractType;
+  _absType?: AbstractTypeProperty;
   _parent?: BaseNode;
 
-  isTypeOf(typeName: string) {
-    return this._type === typeName || this.hasAbsType(typeName);
+  isTypeOf(typeName: NodeType | AbstractType) {
+    return this._type === typeName || this.hasAbsType(typeName as AbstractType);
   }
 
-  hasAbsType(typeName: string): boolean {
+  isTypeAmong(typeNames: string[]): boolean {
+    return typeNames.includes(this._type);
+  }
+
+  getType(): string {
+    return this._type;
+  }
+
+  hasAbsType(typeName: AbstractType): boolean {
     if (!this._absType) {
       return false;
     }
@@ -46,11 +54,11 @@ export class Node implements BaseNode {
     return false;
   }
 
-  addAbsType(typeName: string) {
+  addAbsType(typeName: AbstractType) {
     addAbsType(this, typeName);
   }
 
-  getAbsType(): AbstractType | undefined {
+  getAbsType(): AbstractTypeProperty | undefined {
     return this._absType;
   }
 
